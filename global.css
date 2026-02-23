@@ -1,0 +1,4 @@
+/* global.css — Tailwind CSS directives for NativeWind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -23,7 +23,7 @@ export default function FAQScreen() {
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.subtitle}>
-          Find answers to commonly asked questions about NexHire.
+          Find answers to commonly asked questions about MyApp.
         </Text>
         {DUMMY_FAQ.map((item) => {
           const isOpen = expandedId === item.id;

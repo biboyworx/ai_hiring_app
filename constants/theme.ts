@@ -1,5 +1,5 @@
 /**
- * NexHire Design System Tokens
+ * MyApp Design System Tokens
  * Centralized theme constants for consistent styling across the app.
  * Always reference these tokens instead of hardcoding values.
  */

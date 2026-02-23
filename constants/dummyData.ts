@@ -455,7 +455,7 @@ export const ONBOARDING_SLIDES = [
   {
     id: "1",
     image: require("@/assets/images/onboarding_img.jpg"),
-    title: "NexHire",
+    title: "MyApp",
     subtitle: "AI-Driven Recruitment Platform",
     description: "Leverage cutting-edge AI\nto build your future workforce.",
     isSplash: true,

@@ -162,7 +162,7 @@ export default function SettingsScreen() {
         </Pressable>
 
         {/* Version info */}
-        <Text style={styles.version}>NexHire v1.0.0</Text>
+        <Text style={styles.version}>MyApp v1.0.0</Text>
 
         <View style={{ height: 24 }} />
       </ScrollView>

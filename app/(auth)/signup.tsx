@@ -91,7 +91,7 @@ export default function SignupScreen() {
           </Pressable>
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>
-            Join NexHire and discover AI-powered hiring
+            Join MyApp and discover AI-powered hiring
           </Text>
         </View>
 
@@ -177,14 +177,26 @@ export default function SignupScreen() {
             </View>
             <Text style={styles.termsText}>
               I agree to the{" "}
-              <Text style={styles.termsLink}>Terms of Service</Text> and{" "}
-              <Text style={styles.termsLink}>Privacy Policy</Text>
+              <Text
+                style={styles.termsLink}
+                onPress={() => router.push("/terms-of-service")}
+              >
+                Terms of Service
+              </Text>{" "}
+              and{" "}
+              <Text
+                style={styles.termsLink}
+                onPress={() => router.push("/privacy-policy")}
+              >
+                Privacy Policy
+              </Text>
             </Text>
           </Pressable>
           {errors.terms && <Text style={styles.errorText}>{errors.terms}</Text>}
 
           {/* Sign up button */}
           <ThemedButton
+            variant="outline"
             title="Create Account"
             onPress={handleSignup}
             loading={loading}
@@ -326,6 +338,7 @@ const styles = StyleSheet.create({
   termsLink: {
     color: Colors.secondary,
     fontWeight: "500",
+    textDecorationLine: "underline",
   },
   errorText: {
     fontSize: 12,

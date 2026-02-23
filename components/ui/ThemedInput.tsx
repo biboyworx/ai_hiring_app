@@ -1,6 +1,6 @@
 /**
  * ThemedInput — Styled text input with label, error, and helper text support.
- * Follows NexHire design system with consistent spacing and colors.
+ * Follows MyApp design system with consistent spacing and colors.
  */
 import { Colors } from "@/constants/theme";
 import { FontAwesome } from "@expo/vector-icons";

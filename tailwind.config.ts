@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 /**
  * Tailwind CSS configuration for NativeWind.
- * Extends the default theme with NexHire brand colors and design tokens.
+ * Extends the default theme with MyApp brand colors and design tokens.
  */
 export default {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],

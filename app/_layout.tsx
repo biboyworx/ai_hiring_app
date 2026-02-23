@@ -17,6 +17,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useAuthStore } from "@/hooks/context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
 import "@/global.css";
 
@@ -122,6 +123,7 @@ function RootLayoutNav() {
             options={{ presentation: "modal", headerShown: true }}
           />
         </Stack>
+        <Toast />
       </QueryClientProvider>
     </ThemeProvider>
   );

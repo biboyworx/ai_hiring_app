@@ -81,7 +81,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: "nexhire-auth",
+      name: "MyApp-auth",
       storage: createJSONStorage(() => zustandStorage),
       // Only persist the session — loading/initialized flags reset each launch.
       partialize: (state) => ({

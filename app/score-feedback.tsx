@@ -34,7 +34,7 @@ export default function ScoreFeedbackScreen() {
                 color={Colors.secondary}
               />
             </View>
-            <Text style={styles.aiLabel}>NexHire AI Coach</Text>
+            <Text style={styles.aiLabel}>MyApp AI Coach</Text>
           </View>
           <Text style={styles.aiMessage}>
             Based on your interview performance, you scored {overall}/100 which

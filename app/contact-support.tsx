@@ -21,8 +21,8 @@ const CONTACT_OPTIONS = [
   {
     icon: "envelope" as const,
     label: "Email Us",
-    value: "support@nexhire.com",
-    action: "mailto:support@nexhire.com",
+    value: "support@MyApp.com",
+    action: "mailto:support@MyApp.com",
   },
   {
     icon: "phone" as const,

@@ -1,6 +1,6 @@
 /**
  * ThemedButton — Reusable button component with multiple variants.
- * Follows the NexHire design system for consistent CTAs.
+ * Follows the MyApp design system for consistent CTAs.
  *
  * Variants: primary | secondary | outline | ghost | danger | accent
  * Sizes: sm | md | lg

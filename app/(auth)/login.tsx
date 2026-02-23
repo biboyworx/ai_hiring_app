@@ -13,6 +13,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // components
+
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedInput, { ThemedInputProps } from "@/components/ui/ThemedInput";
 
@@ -20,6 +21,26 @@ import ThemedInput, { ThemedInputProps } from "@/components/ui/ThemedInput";
 import { LoginCredentials, useLoginUser } from "@/hooks/auth/Login";
 
 export default function LoginScreen() {
+  // Temporary for easy access during development — replace with real auth flow later.
+  const emailTemp = "francispadero.avs@gmail.com";
+  const passwordTemp = "admintest";
+
+  const onSubmitTemporary = () => {
+    login(
+      { email: emailTemp, password: passwordTemp },
+      {
+        onSuccess: () => {
+          router.replace("/(tabs)");
+        },
+        onError: (error: Error) => {
+          setError("root", { message: error.message });
+          console.warn("Login failed:", error.message);
+        },
+      },
+    );
+  };
+  // Temporary for easy access during development — replace with real auth flow later.
+
   // Initialize React Hook Form
   const {
     control,
@@ -83,7 +104,9 @@ export default function LoginScreen() {
       >
         {/* Logo / Brand Header */}
         <View style={styles.header}>
-          <Text style={styles.brandName}>NexHire</Text>
+          <Text style={styles.brandName} onPress={() => onSubmitTemporary()}>
+            MyApp
+          </Text>
           <Text style={styles.tagline}>Welcome back! Sign in to continue.</Text>
         </View>
 

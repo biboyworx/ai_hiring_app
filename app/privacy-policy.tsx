@@ -34,7 +34,7 @@ const SECTIONS = [
   },
   {
     title: "Contact Us",
-    body: "If you have questions about this privacy policy or our data practices, please contact us at privacy@nexhire.com or through our in-app support channel.",
+    body: "If you have questions about this privacy policy or our data practices, please contact us at privacy@MyApp.com or through our in-app support channel.",
   },
 ];
 
@@ -48,8 +48,8 @@ export default function PrivacyPolicyScreen() {
       >
         <Text style={styles.updated}>Last updated: January 15, 2025</Text>
         <Text style={styles.intro}>
-          At NexHire, we are committed to protecting your privacy and ensuring
-          the security of your personal information. This policy outlines how we
+          At MyApp, we are committed to protecting your privacy and ensuring the
+          security of your personal information. This policy outlines how we
           collect, use, and safeguard your data.
         </Text>
         {SECTIONS.map((s, i) => (

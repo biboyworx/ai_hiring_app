@@ -29,7 +29,7 @@ export default function InterviewInstructionsScreen() {
   const requestMicPermission = () => {
     Alert.alert(
       "Microphone Access",
-      "NexHire needs access to your microphone for the AI interview.",
+      "MyApp needs access to your microphone for the AI interview.",
       [
         { text: "Deny", style: "cancel" },
         { text: "Allow", onPress: () => setMicGranted(true) },

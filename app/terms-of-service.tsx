@@ -10,23 +10,23 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const SECTIONS = [
   {
     title: "1. Acceptance of Terms",
-    body: "By accessing or using NexHire, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.",
+    body: "By accessing or using MyApp, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.",
   },
   {
     title: "2. Service Description",
-    body: "NexHire provides an AI-powered recruitment platform that includes resume parsing, AI-driven interview simulations, skills scoring, and job matching services. Features may be updated or modified at our discretion.",
+    body: "MyApp provides an AI-powered recruitment platform that includes resume parsing, AI-driven interview simulations, skills scoring, and job matching services. Features may be updated or modified at our discretion.",
   },
   {
     title: "3. User Accounts",
-    body: "You must create an account to use NexHire. You are responsible for maintaining the security of your account credentials. You must provide accurate and complete information during registration.",
+    body: "You must create an account to use MyApp. You are responsible for maintaining the security of your account credentials. You must provide accurate and complete information during registration.",
   },
   {
     title: "4. Acceptable Use",
-    body: "You agree to use NexHire only for lawful purposes. You must not upload false or misleading information, attempt to manipulate scoring algorithms, or use the platform to harass or discriminate against others.",
+    body: "You agree to use MyApp only for lawful purposes. You must not upload false or misleading information, attempt to manipulate scoring algorithms, or use the platform to harass or discriminate against others.",
   },
   {
     title: "5. Intellectual Property",
-    body: "All content, features, and functionality of NexHire are owned by Advanced Virtual Staff PH and are protected by international copyright, trademark, and other intellectual property laws.",
+    body: "All content, features, and functionality of MyApp are owned by Advanced Virtual Staff PH and are protected by international copyright, trademark, and other intellectual property laws.",
   },
   {
     title: "6. AI Interview Content",
@@ -34,7 +34,7 @@ const SECTIONS = [
   },
   {
     title: "7. Limitation of Liability",
-    body: "NexHire provides interview coaching and job matching services as tools to assist your career development. We do not guarantee job placement or specific outcomes from using our services.",
+    body: "MyApp provides interview coaching and job matching services as tools to assist your career development. We do not guarantee job placement or specific outcomes from using our services.",
   },
   {
     title: "8. Termination",

@@ -15,10 +15,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // components
 
 import ThemedButton from "@/components/ui/ThemedButton";
-import ThemedInput, { ThemedInputProps } from "@/components/ui/ThemedInput";
+import ThemedInput from "@/components/ui/ThemedInput";
 
 // hooks
 import { LoginCredentials, useLoginUser } from "@/hooks/auth/Login";
+
+// contants
+import { loginFields } from "@/constants/Forms";
 
 export default function LoginScreen() {
   // Temporary for easy access during development — replace with real auth flow later.
@@ -54,26 +57,6 @@ export default function LoginScreen() {
     },
   });
 
-  // fields for form generation
-  const fields: ThemedInputProps[] = [
-    {
-      label: "Email",
-      name: "email",
-      autoComplete: "email",
-      helperText: "you@gmail.com",
-      leftIcon: "envelope",
-      keyboardType: "email-address",
-    },
-    {
-      label: "Password",
-      name: "password",
-      autoComplete: "current-password",
-      helperText: "Enter your password",
-      leftIcon: "lock",
-      keyboardType: "default",
-      isPassword: true,
-    },
-  ];
   // Hook for login mutation
   const { mutate: login, isPending } = useLoginUser();
 
@@ -119,67 +102,69 @@ export default function LoginScreen() {
             </View>
           )}
           {/* Maps the field array to generate form avoiding repetition. */}
-          {fields.map(({ label, name, helperText, leftIcon, keyboardType }) => {
-            if (name === "email") {
-              return (
-                <Controller
-                  key={name}
-                  control={control}
-                  name={name}
-                  rules={{
-                    required: "Email is required",
-                    pattern: {
-                      value: /\S+@\S+\.\S+/,
-                      message: "Enter a valid email",
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ThemedInput
-                      label={label}
-                      placeholder={helperText}
-                      leftIcon={leftIcon || "envelope"}
-                      keyboardType={keyboardType}
-                      autoCapitalize="none"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      error={errors[name]?.message}
-                    />
-                  )}
-                />
-              );
-            }
+          {loginFields.map(
+            ({ label, name, helperText, leftIcon, keyboardType }) => {
+              if (name === "email") {
+                return (
+                  <Controller
+                    key={name}
+                    control={control}
+                    name={name}
+                    rules={{
+                      required: "Email is required",
+                      pattern: {
+                        value: /\S+@\S+\.\S+/,
+                        message: "Enter a valid email",
+                      },
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <ThemedInput
+                        label={label}
+                        placeholder={helperText}
+                        leftIcon={leftIcon || "envelope"}
+                        keyboardType={keyboardType}
+                        autoCapitalize="none"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        error={errors[name]?.message}
+                      />
+                    )}
+                  />
+                );
+              }
 
-            if (name === "password") {
-              return (
-                <Controller
-                  key={name}
-                  control={control}
-                  name={name}
-                  rules={{
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ThemedInput
-                      label={label}
-                      placeholder={helperText}
-                      leftIcon={leftIcon || "lock"}
-                      keyboardType={keyboardType}
-                      isPassword
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      error={errors[name]?.message}
-                    />
-                  )}
-                />
-              );
-            }
-          })}
+              if (name === "password") {
+                return (
+                  <Controller
+                    key={name}
+                    control={control}
+                    name={name}
+                    rules={{
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters",
+                      },
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <ThemedInput
+                        label={label}
+                        placeholder={helperText}
+                        leftIcon={leftIcon || "lock"}
+                        keyboardType={keyboardType}
+                        isPassword
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        error={errors[name]?.message}
+                      />
+                    )}
+                  />
+                );
+              }
+            },
+          )}
 
           {/* Forgot password link */}
           <Pressable

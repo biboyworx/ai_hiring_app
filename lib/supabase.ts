@@ -17,3 +17,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     detectSessionInUrl: false,
   },
 });
+
+// To refetch the data type
+// npx supabase gen types typescript --project-id qffwgtmmnghavdefnzdm > database.types.ts

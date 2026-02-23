@@ -8,14 +8,17 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import * as QueryParams from "expo-auth-session/build/QueryParams";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import * as Linking from "expo-linking";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import { useAuthStore } from "@/hooks/context/AuthContext";
+import { supabase } from "@/lib/supabase";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 
@@ -58,6 +61,59 @@ function RootLayoutNav() {
   // Kick off the auth session check as early as possible.
   useEffect(() => {
     initialize();
+  }, []);
+
+  /**
+   * Deep-link handler — catches the Supabase email confirmation redirect.
+   *
+   * When the user taps the confirmation link in their email, it opens the app
+   * via the `myapp://` scheme with tokens in the URL fragment:
+   *   myapp://...#access_token=...&refresh_token=...
+   *
+   * We parse those tokens and call supabase.auth.setSession() to log them in.
+   */
+  useEffect(() => {
+    const handleDeepLink = async (event: { url: string }) => {
+      const url = event.url;
+      console.log(url);
+      if (!url) return;
+
+      // The tokens live in the URL fragment (#access_token=...&refresh_token=...)
+      const hashIndex = url.indexOf("#");
+      if (hashIndex === -1) return;
+
+      const fragment = url.substring(hashIndex + 1);
+      const { params } = QueryParams.getQueryParams(`?${fragment}`);
+
+      const accessToken = params?.access_token;
+      const refreshToken = params?.refresh_token;
+
+      if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+
+        if (error) {
+          console.error("[DeepLink] Failed to set session:", error.message);
+        } else {
+          // Session is set — onAuthStateChange in AuthContext will update the
+          // store automatically, which triggers the index route to redirect
+          // to /(tabs).
+          router.replace("/(tabs)");
+        }
+      }
+    };
+
+    // Handle the URL that opened the app (cold start)
+    Linking.getInitialURL().then((url) => {
+      if (url) handleDeepLink({ url });
+    });
+
+    // Handle URLs while the app is already open (warm start)
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+
+    return () => subscription.remove();
   }, []);
 
   return (

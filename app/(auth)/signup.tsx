@@ -9,26 +9,41 @@ import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// constants
+import { errorToast, successToast } from "@/components/toasts/notifications";
+import { signupFields } from "@/constants/Forms";
+
+// hooks
+import { SignUpCredentials, useSignUpUser } from "@/hooks/auth/SignUp";
+
 export default function SignupScreen() {
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const updateField = (key: string, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    // Clear error on typing
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: "" }));
-  };
+  // Initialize React Hook Form
+  const {
+    control,
+    handleSubmit,
+    setError,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const password = watch("password");
+
+  // Hook for signup mutation
+  const { mutate: signup, isPending } = useSignUpUser();
 
   // Password strength calculation
   const getPasswordStrength = (pwd: string) => {
@@ -48,32 +63,25 @@ export default function SignupScreen() {
     return levels[Math.min(score, 3)];
   };
 
-  const strength = getPasswordStrength(form.password);
+  const strength = getPasswordStrength(password);
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!form.firstName.trim()) e.firstName = "First name is required";
-    if (!form.lastName.trim()) e.lastName = "Last name is required";
-    if (!form.email.trim()) e.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = "Enter a valid email";
-    if (!form.password) e.password = "Password is required";
-    else if (form.password.length < 8)
-      e.password = "Password must be at least 8 characters";
-    if (form.password !== form.confirmPassword)
-      e.confirmPassword = "Passwords do not match";
-    if (!agreed) e.terms = "You must agree to the terms";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleSignup = () => {
-    if (!validate()) return;
-    setLoading(true);
-    // Simulate signup → email verification
-    setTimeout(() => {
-      setLoading(false);
-      router.push("/(auth)/email-verification");
-    }, 1500);
+  const onSubmit = (data: SignUpCredentials) => {
+    if (!agreed) {
+      setError("root", { message: "You must agree to the terms" });
+      return;
+    }
+    signup(
+      { ...data },
+      {
+        onSuccess: () => {
+          router.push("/(auth)/confirm-email");
+        },
+        onError: (error: Error) => {
+          setError("root", { message: error.message });
+          errorToast();
+        },
+      },
+    );
   };
 
   return (
@@ -95,53 +103,98 @@ export default function SignupScreen() {
           </Text>
         </View>
 
+        {/* Error UI for signup failure */}
+        {errors.root?.message && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{errors.root.message}</Text>
+          </View>
+        )}
+
         {/* Form */}
         <View style={styles.form}>
           <View style={styles.nameRow}>
-            <View style={styles.halfInput}>
-              <ThemedInput
-                label="First Name"
-                placeholder="John"
-                leftIcon="user"
-                value={form.firstName}
-                onChangeText={(v) => updateField("firstName", v)}
-                error={errors.firstName}
-              />
-            </View>
-            <View style={styles.halfInput}>
-              <ThemedInput
-                label="Last Name"
-                placeholder="Doe"
-                value={form.lastName}
-                onChangeText={(v) => updateField("lastName", v)}
-                error={errors.lastName}
-              />
-            </View>
+            {signupFields.map(
+              ({ label, name, keyboardType, helperText, leftIcon }) => {
+                if (!name || (name !== "firstName" && name !== "lastName")) {
+                  return null;
+                }
+                return (
+                  <View key={name} style={styles.halfInput}>
+                    <Controller
+                      control={control}
+                      name={name}
+                      render={({ field: { onChange, onBlur, value } }) => (
+                        <ThemedInput
+                          label={label}
+                          placeholder={helperText}
+                          leftIcon={leftIcon || "user"}
+                          keyboardType={keyboardType}
+                          autoCapitalize="words"
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          value={value}
+                          error={errors[name]?.message}
+                        />
+                      )}
+                    />
+                  </View>
+                );
+              },
+            )}
           </View>
-
-          <ThemedInput
-            label="Email Address"
-            placeholder="you@example.com"
-            leftIcon="envelope"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={form.email}
-            onChangeText={(v) => updateField("email", v)}
-            error={errors.email}
+          {/* Will implement continously the rest of the fields like email, password, 
+          confirm password and the rest of the UI in the next PR to keep this one smaller and easier to review. */}
+          <Controller
+            control={control}
+            name="email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Enter a valid email",
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedInput
+                label="Email Address"
+                placeholder="you@example.com"
+                leftIcon="envelope"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={errors.email?.message}
+              />
+            )}
           />
 
-          <ThemedInput
-            label="Password"
-            placeholder="Create a strong password"
-            leftIcon="lock"
-            isPassword
-            value={form.password}
-            onChangeText={(v) => updateField("password", v)}
-            error={errors.password}
+          <Controller
+            control={control}
+            name="password"
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedInput
+                label="Password"
+                placeholder="Create a strong password"
+                leftIcon="lock"
+                isPassword
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={errors.password?.message}
+              />
+            )}
           />
 
           {/* Password strength indicator */}
-          {form.password.length > 0 && (
+          {password && password.length > 0 && (
             <View style={styles.strengthRow}>
               <View style={styles.strengthTrack}>
                 <View
@@ -160,14 +213,26 @@ export default function SignupScreen() {
             </View>
           )}
 
-          <ThemedInput
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            leftIcon="lock"
-            isPassword
-            value={form.confirmPassword}
-            onChangeText={(v) => updateField("confirmPassword", v)}
-            error={errors.confirmPassword}
+          <Controller
+            control={control}
+            name="confirmPassword"
+            rules={{
+              required: "Confirm password is required",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ThemedInput
+                label="Confirm Password"
+                placeholder="Confirm your password"
+                leftIcon="lock"
+                isPassword
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={errors.confirmPassword?.message}
+              />
+            )}
           />
 
           {/* Terms checkbox */}
@@ -192,14 +257,12 @@ export default function SignupScreen() {
               </Text>
             </Text>
           </Pressable>
-          {errors.terms && <Text style={styles.errorText}>{errors.terms}</Text>}
 
           {/* Sign up button */}
           <ThemedButton
-            variant="outline"
             title="Create Account"
-            onPress={handleSignup}
-            loading={loading}
+            onPress={handleSubmit(onSubmit)}
+            loading={isPending}
             fullWidth
             size="lg"
           />
@@ -340,11 +403,20 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textDecorationLine: "underline",
   },
+  errorContainer: {
+    backgroundColor: "#FDECEA",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#F5C6CB",
+    alignItems: "center",
+  },
   errorText: {
-    fontSize: 12,
-    color: Colors.danger,
-    marginTop: -12,
-    marginBottom: 12,
+    color: "#B71C1C",
+    fontSize: 14,
+    fontWeight: "600",
+    textAlign: "center",
   },
   divider: {
     flexDirection: "row",

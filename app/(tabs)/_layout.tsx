@@ -6,7 +6,8 @@ import { Colors } from "@/constants/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function TabIcon({
   name,
@@ -25,13 +26,21 @@ function TabIcon({
 }
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+  const bottomPadding =
+    Platform.OS === "android" ? Math.max(insets.bottom, 10) : 10;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.muted,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: {
+          ...styles.tabBar,
+          height: 60 + bottomPadding,
+          paddingBottom: bottomPadding,
+        },
         tabBarLabelStyle: styles.tabLabel,
         tabBarHideOnKeyboard: true,
       }}
@@ -90,8 +99,6 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 70,
-    paddingBottom: 10,
     paddingTop: 8,
     borderTopWidth: 1,
     borderTopColor: Colors.border,

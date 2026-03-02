@@ -114,7 +114,7 @@ export default function JobsScreen() {
           renderItem={({ item }) => (
             <Card
               onPress={() => router.push(`/job-detail?id=${item.id}`)}
-              style={styles.jobCard}
+              style={[styles.jobCard, styles.elevatedCard]}
             >
               <View style={styles.jobTop}>
                 <View style={styles.companyAvatar}>
@@ -225,7 +225,21 @@ const styles = StyleSheet.create({
   filterTextActive: { color: "#FFFFFF" },
   listContent: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 100 },
   jobList: { flex: 1 },
-  jobCard: { marginBottom: 14 },
+  jobCard: {
+    marginBottom: 20,
+    borderRadius: 18,
+    padding: 18,
+    backgroundColor: Colors.surface,
+  },
+  elevatedCard: {
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.13,
+    shadowRadius: 16,
+    elevation: 8,
+    borderRadius: 18,
+    backgroundColor: Colors.surface,
+  },
   jobTop: {
     flexDirection: "row",
     alignItems: "center",
@@ -242,20 +256,20 @@ const styles = StyleSheet.create({
   },
   companyInitial: { fontSize: 18, fontWeight: "700", color: Colors.primary },
   jobInfo: { flex: 1 },
-  jobTitle: { fontSize: 16, fontWeight: "600", color: Colors.text.primary },
-  jobCompany: { fontSize: 13, color: Colors.text.secondary, marginTop: 2 },
+  jobTitle: { fontSize: 19, fontWeight: "700", color: Colors.text.primary },
+  jobCompany: { fontSize: 15, color: Colors.text.secondary, marginTop: 2 },
   matchCircle: { alignItems: "center" },
-  matchScore: { fontSize: 16, fontWeight: "700", color: Colors.success },
+  matchScore: { fontSize: 18, fontWeight: "800", color: Colors.success },
   matchLabel: { fontSize: 10, color: Colors.muted },
   jobDesc: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.text.secondary,
-    lineHeight: 20,
-    marginBottom: 10,
+    lineHeight: 22,
+    marginBottom: 14,
   },
   jobMeta: { flexDirection: "row", gap: 16, marginBottom: 10 },
   metaItem: { flexDirection: "row", alignItems: "center", gap: 4 },
-  metaText: { fontSize: 12, color: Colors.text.secondary },
+  metaText: { fontSize: 13, color: Colors.text.secondary },
   tagRow: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
   emptyState: { alignItems: "center", paddingTop: 60, gap: 12 },
   emptyText: { fontSize: 16, color: Colors.muted },

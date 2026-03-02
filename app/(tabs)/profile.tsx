@@ -64,13 +64,13 @@ export default function ProfileScreen() {
         </View>
 
         {/* ── About ── */}
-        <Card style={styles.section}>
+        <Card style={[styles.section, styles.profileSectionCard]}>
           <Text style={styles.sectionTitle}>About</Text>
           <Text style={styles.bio}>{DUMMY_USER.bio}</Text>
         </Card>
 
         {/* ── Contact Info ── */}
-        <Card style={styles.section}>
+        <Card style={[styles.section, styles.profileSectionCard]}>
           <Text style={styles.sectionTitle}>Contact</Text>
           <InfoRow icon="envelope" label="Email" value={DUMMY_USER.email} />
           <InfoRow icon="phone" label="Phone" value={DUMMY_USER.phone} />
@@ -87,22 +87,26 @@ export default function ProfileScreen() {
         </Card>
 
         {/* ── Skills ── */}
-        <Card style={styles.section}>
+        <Card style={[styles.section, styles.profileSectionCard]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Skills</Text>
-            <Pressable onPress={() => router.push("/career-info")}>
+            <Pressable onPress={() => router.push("/career-info")}> 
               <Text style={styles.editLink}>Edit</Text>
             </Pressable>
           </View>
-          <View style={styles.skillsGrid}>
-            {DUMMY_USER.skills.map((skill) => (
-              <Badge key={skill} label={skill} variant="secondary" size="md" />
-            ))}
+          <View style={styles.skillsEnhancedWrapper}>
+            <View style={styles.skillsEnhancedGrid}>
+              {DUMMY_USER.skills.map((skill) => (
+                <View key={skill} style={styles.skillBadgeWrapper}>
+                  <Badge label={skill} variant="secondary" size="md" />
+                </View>
+              ))}
+            </View>
           </View>
         </Card>
 
         {/* ── Experience ── */}
-        <Card style={styles.section}>
+        <Card style={[styles.section, styles.profileSectionCard]}>
           <Text style={styles.sectionTitle}>Experience</Text>
           {DUMMY_USER.experience.map((exp, i) => (
             <View
@@ -124,7 +128,7 @@ export default function ProfileScreen() {
         </Card>
 
         {/* ── Education ── */}
-        <Card style={styles.section}>
+        <Card style={[styles.section, styles.profileSectionCard]}>
           <Text style={styles.sectionTitle}>Education</Text>
           {DUMMY_USER.education.map((edu, i) => (
             <View key={i} style={styles.eduItem}>
@@ -143,7 +147,7 @@ export default function ProfileScreen() {
           ))}
         </Card>
 
-        <View style={{ height: 24 }} />
+        <View style={{ height: 32 }} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -221,7 +225,18 @@ const styles = StyleSheet.create({
   statItem: { alignItems: "center", gap: 4 },
   statValue: { fontSize: 20, fontWeight: "700", color: Colors.text.primary },
   statLabel: { fontSize: 11, color: Colors.muted },
-  section: { marginBottom: 16 },
+  section: {},
+  profileSectionCard: {
+    marginBottom: 28,
+    paddingBottom: 4,
+    borderRadius: 16,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
+    backgroundColor: Colors.surface,
+  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "600",
@@ -258,7 +273,37 @@ const styles = StyleSheet.create({
     color: Colors.text.primary,
     marginTop: 1,
   },
-  skillsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  // ...existing code...
+  skillsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 }, // legacy, not used
+  skillsEnhancedWrapper: {
+    backgroundColor: `${Colors.secondary}08`,
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 10,
+    marginTop: 2,
+    marginBottom: 2,
+    minHeight: 60,
+    justifyContent: "center",
+  },
+  skillsEnhancedGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 14,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  skillBadgeWrapper: {
+    marginBottom: 8,
+    marginRight: 8,
+    shadowColor: Colors.secondary,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 2,
+    borderRadius: 8,
+    backgroundColor: `${Colors.surface}CC`,
+    padding: 2,
+  },
   expItem: { flexDirection: "row", gap: 12, paddingBottom: 14 },
   expDivider: {
     borderBottomWidth: 1,

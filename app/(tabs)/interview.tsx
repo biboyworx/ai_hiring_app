@@ -137,7 +137,7 @@ export default function ApplicationsScreen() {
             <Card
               key={app.id}
               onPress={() => router.push(`/application-status?id=${app.id}`)}
-              style={styles.appCard}
+              style={[styles.appCard, styles.elevatedCard]}
             >
               {/* Top row: company + status */}
               <View style={styles.appTop}>
@@ -329,7 +329,21 @@ const styles = StyleSheet.create({
   filterText: { fontSize: 13, fontWeight: "500", color: Colors.text.secondary },
   filterTextActive: { color: "#FFF", fontWeight: "600" },
   // App cards
-  appCard: { marginBottom: 14 },
+  appCard: {
+    marginBottom: 20,
+    borderRadius: 18,
+    padding: 18,
+    backgroundColor: Colors.surface,
+  },
+  elevatedCard: {
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.13,
+    shadowRadius: 16,
+    elevation: 8,
+    borderRadius: 18,
+    backgroundColor: Colors.surface,
+  },
   appTop: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -338,8 +352,8 @@ const styles = StyleSheet.create({
   },
   appTopLeft: { flexDirection: "row", alignItems: "center", gap: 10, flex: 1 },
   appInfo: { flex: 1 },
-  appTitle: { fontSize: 15, fontWeight: "600", color: Colors.text.primary },
-  appCompany: { fontSize: 13, color: Colors.text.secondary, marginTop: 1 },
+  appTitle: { fontSize: 18, fontWeight: "700", color: Colors.text.primary },
+  appCompany: { fontSize: 15, color: Colors.text.secondary, marginTop: 1 },
   // Pipeline
   pipeline: {
     flexDirection: "row",
@@ -396,13 +410,13 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   scoreLabel: { fontSize: 12, color: Colors.text.secondary, flex: 1 },
-  scoreValue: { fontSize: 14, fontWeight: "700", color: Colors.text.primary },
+  scoreValue: { fontSize: 16, fontWeight: "800", color: Colors.text.primary },
   scoreDivider: {
     width: 1,
     backgroundColor: Colors.border,
     marginHorizontal: 8,
   },
-  appDate: { fontSize: 11, color: Colors.muted },
+  appDate: { fontSize: 13, color: Colors.muted, marginTop: 2 },
   actionHint: {
     flexDirection: "row",
     alignItems: "center",

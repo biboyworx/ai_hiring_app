@@ -34,7 +34,7 @@ export default function HomeScreen() {
         {/* ── Header: Greeting + Avatar + Notifications ── */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={styles.greeting}>Good morning,</Text>
+            <Text style={styles.greeting}>Good Day,</Text>
             <Text style={styles.userName}>{DUMMY_USER.firstName} 👋</Text>
           </View>
           <View style={styles.headerRight}>

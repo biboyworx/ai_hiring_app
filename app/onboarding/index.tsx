@@ -167,7 +167,7 @@ export default function OnboardingScreen() {
         </View>
 
         {/* Bottom branding */}
-        <Text style={styles.branding}>Advanced Virtual Staff PH</Text>
+        <Text style={styles.branding}>NexHire</Text>
       </View>
     </SafeAreaView>
   );
